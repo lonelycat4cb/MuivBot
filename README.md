@@ -1,7 +1,7 @@
 # ShagBot Как скачать?
 
 
-- Чтобы скачать Git на окно перейдите по этой ссылке (https://github.com/DreamTeamMephi/pinboard/wiki/%D0%A3%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0-%D0%B8-%D0%BD%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B0-git-%D0%BD%D0%B0-Windows.)
+- Чтобы скачать Git на окно перейдите по этой ссылке (https://git-scm.com/download/win)
 
 - Там жмём везде далее, пока не установится.
 
