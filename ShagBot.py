@@ -4,67 +4,80 @@ from telebot import types
 
 bot = telebot.TeleBot('1107170969:AAEcKoxUynG08lbnHFajPWu9gcw_pXZMUg8')
 
-# ----------------------------------------------------------Кнопки языка при старте----------------------------------------------------------
+# ----------------------------------------------------------Кнопки_языка_при_старте----------------------------------------------------------
 btnLanguage = telebot.types.ReplyKeyboardMarkup()
-btnLanguage.row('Русский')
-btnLanguage.row('English')
+btnLanguage.row('Русский🇷🇺')
+btnLanguage.row('English🇬🇧')
+
+# --------------------------------------QR_CODE----------------------------------QR_CODE-------------------------------------------
+
+big_code = pyqrcode.create("https://pypi.org/project/pyTelegramBotAPI/")
+big_code.png('codqrine12.png', scale=8, module_color=[0, 0, 0], background=[0xff, 0xff, 0xff])
+
 
 # ----------------------------------------------------------Старт----------------------------------------------------------
 @bot.message_handler(commands=['start', 'старт'])
 def start_message(message):
     bot.send_message(message.chat.id, 'Выберите язык / Select language', reply_markup=btnLanguage)
 
-# ----------------------------------------------------------Возврат в начало----------------------------------------------------------
-@bot.message_handler(func=lambda message: message.text.lower() == '<Возврат в начало>'.lower() or message.text.lower() == '<Return to start>'.lower())
+
+# ----------------------------------------------------------Возврат_в_начало----------------------------------------------------------
+@bot.message_handler(func=lambda
+        message: message.text.lower() == '<Возврат в начало>'.lower() or message.text.lower() == '<Return to start>'.lower())
 def btn_login_ru(message):
     start_message(message)
 
-# ----------------------------------------------------------Возврат назад----------------------------------------------------------
-@bot.message_handler(func=lambda message: message.text.lower() == '<назад>'.lower() or message.text.lower() == '<back>'.lower())
+
+# ----------------------------------------------------------Возврат_назад----------------------------------------------------------
+@bot.message_handler(
+    func=lambda message: message.text.lower() == '<назад>'.lower() or message.text.lower() == '<back>'.lower())
 def btn_back(message):
     btn_welcome(message)
 
 
-# ----------------------------------------------------------Справочник языка----------------------------------------------------------
+# ----------------------------------------------------------Справочник_языка----------------------------------------------------------
 dictMsg = {
     'en': {
         'Забыл логин': 'Forget login',
         'Забыл пароль': 'Forget password',
-        'Введите пароль': 'Enter password',
+        '✒Введите пароль': '✒Enter password',
         'Welcome': 'Welcome',
         '<Возврат в начало>': '<Return to start>',
-        'Ученик': 'Student',
-        'Родитель': 'Parent',
         'Средний балл': 'Average score',
         'Посещаемость': 'Attendance',
         'Мероприятия': 'Events',
-        'Стоимость обучения': 'Cost training',
+        'Стоимость ₽': 'Cost $',
         'Конец обучения': 'The end of the training',
-        'Отзывы преподавателей': 'Teachers feedback',
+        'Отзывы': 'Feedback',
         'Когда пара?': 'When pairs?',
         'Где пара?': 'Where pairs?',
-        '<Назад>': '<Back>'
+        '<Назад>': '<Back>',
+        'Оплата': 'Payment',
+        'Контакты': 'Contacts',
+        'Расписание': 'Schedule',
+        'Рейтинг': 'Rating'
     },
     'ru': {
         'Забыл логин': 'Забыл логин',
         'Забыл пароль': 'Забыл пароль',
-        'Введите пароль': 'Введите пароль',
+        '✒Введите пароль': '✒Введите пароль',
         'Welcome': 'Добро пожаловать!',
         '<Возврат в начало>': '<Возврат в начало>',
-        'Ученик': 'Ученик',
-        'Родитель': 'Родитель',
         'Средний балл': 'Средний балл',
         'Посещаемость': 'Посещаемость',
         'Мероприятия': 'Мероприятия',
-        'Стоимость обучения': 'Стоимость обучения',
+        'Стоимость ₽': 'Стоимость ₽',
         'Конец обучения': 'Конец обучения',
-        'Отзывы преподавателей': 'Отзывы преподавателей',
+        'Отзывы': 'Отзывы',
         'Когда пара?': 'Когда пара?',
         'Где пара?': 'Где пара?',
-        '<Назад>': '<Назад>'
+        '<Назад>': '<Назад>',
+        'Оплата': 'Оплата',
+        'Контакты': 'Контакты',
+        'Расписание': 'Расписание',
+        'Рейтинг': 'Рейтинг'
     }
 }
-
 
 # флаг языка
 lang = 'en'
@@ -80,8 +93,8 @@ uPsswd = ''
 # все функции   начинающиеся с btn_ - выводят кнопки
 #               начинающиеся c save_ - сохраняют введенные пользователем данные
 
-# ----------------------------------------------------------Авторизация на русском----------------------------------------------------------
-@bot.message_handler(func=lambda message: message.text.lower() == 'русский')
+# ----------------------------------------------------------Авторизация_на_русском-------------------------------------------------------------
+@bot.message_handler(func=lambda message: message.text.lower() == 'русский🇷🇺')
 def btn_login_ru(message):
     global awaitAuth, lang
     awaitAuth = 1
@@ -89,11 +102,11 @@ def btn_login_ru(message):
     k = telebot.types.ReplyKeyboardMarkup()
     k.row('Забыл логин')
     k.row('<Возврат в начало>')
-    bot.send_message(message.chat.id, 'Введите ваш логин:', reply_markup=k)
+    bot.send_message(message.chat.id, '✏Введите ваш логин:', reply_markup=k)
 
 
-# ----------------------------------------------------------Авторизация на английском----------------------------------------------------------
-@bot.message_handler(func=lambda message: message.text.lower() == 'english')
+# ----------------------------------------------------------Авторизация_на_английском----------------------------------------------------------
+@bot.message_handler(func=lambda message: message.text.lower() == 'english🇬🇧')
 def btn_login_en(message):
     global awaitAuth, lang
     awaitAuth = 1
@@ -101,10 +114,10 @@ def btn_login_en(message):
     k = telebot.types.ReplyKeyboardMarkup()
     k.row('Forget login')
     k.row('<Return to start>')
-    bot.send_message(message.chat.id, 'Enter login:', reply_markup=k)
+    bot.send_message(message.chat.id, '✏Enter login:', reply_markup=k)
 
 
-# ----------------------------------------------------------Сохранение логина----------------------------------------------------------
+# ----------------------------------------------------------Сохранение_логина------------------------------------------------------------------
 @bot.message_handler(func=lambda message: message.content_type == 'text' and awaitAuth == 1)
 def save_user_login(message):
     global uLogin, lang, awaitAuth
@@ -113,16 +126,16 @@ def save_user_login(message):
     k = telebot.types.ReplyKeyboardMarkup()
     k.row('Забыл пароль')
     k.row('<Возврат в начало>')
-    bot.send_message(message.chat.id, dictMsg[lang]['Введите пароль'])
+    bot.send_message(message.chat.id, dictMsg[lang]['✒Введите пароль'])
 
 
-# ----------------------------------------------------------Сохранение пароля----------------------------------------------------------
+# ----------------------------------------------------------Сохранение_пароля----------------------------------------------------------
 @bot.message_handler(func=lambda message: message.content_type == 'text' and awaitAuth == 2)
 def save_user_passwd(message):
     global uLogin, uPsswd, lang, awaitAuth
     awaitAuth = 0
     uPsswd = message.text
-    if uLogin == 'admin1' and uPsswd == 'admin2':
+    if uLogin == '1' and uPsswd == '2':
         btn_welcome(message)
     else:
         bot.send_message(message.chat.id, 'Oops!')
@@ -131,44 +144,66 @@ def save_user_passwd(message):
         else:
             btn_login_en(message)
 
-# ----------------------------------------------------------Ученик / Родитель----------------------------------------------------------
+
+# ----------------------------------------------------------Панель----------------------------------------------------------
+
 def btn_welcome(message):
     k = telebot.types.ReplyKeyboardMarkup()
-    k.row(dictMsg[lang]['Ученик'])
-    k.row(dictMsg[lang]['Родитель'])
-    k.row(dictMsg[lang]['<Возврат в начало>'])
     bot.send_message(message.chat.id, dictMsg[lang]['Welcome'], reply_markup=k)
-
-
-# ----------------------------------------------------------Панель ученика----------------------------------------------------------
-@bot.message_handler(func=lambda message: message.text.lower() == 'ученик' or message.text.lower() == 'student')
-def student_panel(message):
-    k = telebot.types.ReplyKeyboardMarkup()
-    k.row(dictMsg[lang]['Средний балл'], dictMsg[lang]['Посещаемость'], dictMsg[lang]['Мероприятия'])
-    k.row(dictMsg[lang]['Конец обучения'], dictMsg[lang]['Отзывы преподавателей'])
-    k.row(dictMsg[lang]['<Назад>'])
+    k.row(dictMsg[lang]['Средний балл'], dictMsg[lang]['Посещаемость'], dictMsg[lang]['Стоимость ₽'],
+          dictMsg[lang]['Оплата'])
+    k.row(dictMsg[lang]['Конец обучения'], dictMsg[lang]['Отзывы'], dictMsg[lang]['Мероприятия'])
+    k.row(dictMsg[lang]['Контакты'], dictMsg[lang]['Расписание'])
+    k.row(dictMsg[lang]['Рейтинг'])
+    k.row(dictMsg[lang]['<Возврат в начало>'])
     if lang == 'ru':
         bot.send_message(message.chat.id, 'Что вы хотите узнать?', reply_markup=k)
     else:
         bot.send_message(message.chat.id, 'What do you want to know?', reply_markup=k)
 
 
-# ----------------------------------------------------------Панель родителя----------------------------------------------------------
-@bot.message_handler(func=lambda message: message.text.lower() == 'родитель' or message.text.lower() == 'parent')
-def parent_panel(message):
-    k = telebot.types.ReplyKeyboardMarkup()
-    k = telebot.types.ReplyKeyboardMarkup()
-    k.row(dictMsg[lang]['Средний балл'], dictMsg[lang]['Посещаемость'], dictMsg[lang]['Стоимость обучения'])
-    k.row(dictMsg[lang]['Конец обучения'], dictMsg[lang]['Отзывы преподавателей'], dictMsg[lang]['Мероприятия'])
-    k.row(dictMsg[lang]['<Назад>'])
+# ----------------------------------------------------------Рейтинг------------------------------------------------------------
+
+@bot.message_handler(func=lambda message: message.text.lower() == 'рейтинг' or message.text.lower() == 'rating')
+def rating(message):
     if lang == 'ru':
-        bot.send_message(message.chat.id, 'Что вы хотите узнать?', reply_markup=k)
+        bot.send_message(message.chat.id, 'Рейтинг:')
+        bot.send_message(message.chat.id, 'Коля - 1003☆')
+        bot.send_message(message.chat.id, 'Маша - 996☆')
+        bot.send_message(message.chat.id, 'Арсений - 879☆')
+        bot.send_message(message.chat.id, 'Алексей - 740☆')
     else:
-        bot.send_message(message.chat.id, 'What do you want to know?', reply_markup=k)
+        bot.send_message(message.chat.id, 'Rating:')
+        bot.send_message(message.chat.id, 'Jhon - 1003☆')
+        bot.send_message(message.chat.id, 'Anna - 996☆')
+        bot.send_message(message.chat.id, 'Kate - 879☆')
+        bot.send_message(message.chat.id, 'Stefania - 740☆')
 
 
-# ----------------------------------------------------------Средний балл----------------------------------------------------------
-@bot.message_handler(func=lambda message: message.text.lower() == 'средний балл' or message.text.lower() == 'average score')
+# ----------------------------------------------------------Оплата------------------------------------------------------------
+
+@bot.message_handler(func=lambda message: message.text.lower() == 'оплата' or message.text.lower() == 'payment')
+def payment(message):
+    if lang == 'ru':
+        bot.send_message(message.chat.id, 'QR для оплаты:')
+    else:
+        bot.send_message(message.chat.id, 'QR for payment:')
+
+
+# ----------------------------------------------------------Расписание----------------------------------------------------------
+@bot.message_handler(
+    func=lambda message: message.text.lower() == 'расписание' or message.text.lower() == 'schedule')
+def schedule(message):
+    if lang == 'ru':
+        bot.send_message(message.chat.id, 'Уроки будут: 24 Мая, 31 Мая')
+    else:
+        bot.send_message(message.chat.id, 'Lessons will be: 24 May, 31 May')
+
+
+# ----------------------------------------------------------Средний_балл----------------------------------------------------------
+
+@bot.message_handler(
+    func=lambda message: message.text.lower() == 'средний балл' or message.text.lower() == 'average score')
 def average_score(message):
     if lang == 'ru':
         bot.send_message(message.chat.id, 'Ваш средний балл: 11')
@@ -177,7 +212,8 @@ def average_score(message):
 
 
 # ----------------------------------------------------------Посещаемость----------------------------------------------------------
-@bot.message_handler(func=lambda message: message.text.lower() == 'посещаемость' or message.text.lower() == 'attendance')
+@bot.message_handler(
+    func=lambda message: message.text.lower() == 'посещаемость' or message.text.lower() == 'attendance')
 def attendance(message):
     if lang == 'ru':
         bot.send_message(message.chat.id, 'Ваша посещаемость: 100%')
@@ -194,17 +230,21 @@ def events(message):
         bot.send_message(message.chat.id, 'Future events: Summer ISTEP camp')
 
 
-# ----------------------------------------------------------Стоимость обучения----------------------------------------------------------
-@bot.message_handler(func=lambda message: message.text.lower() == 'стоимость обучения' or message.text.lower() == 'cost training')
-def cost_training(message):
+# ----------------------------------------------------------Стоимость_обучения----------------------------------------------------------
+
+@bot.message_handler(
+    func=lambda message: message.text.lower() == 'стоимость ₽' or message.text.lower() == 'cost $')
+def cost(message):
     if lang == 'ru':
         bot.send_message(message.chat.id, 'Стоимость: 15 000 рублей')
     else:
         bot.send_message(message.chat.id, 'Cost: 200 dollars')
 
 
-# ----------------------------------------------------------Конец обучения----------------------------------------------------------
-@bot.message_handler(func=lambda message: message.text.lower() == 'конец обучения' or message.text.lower() == 'the end of the training')
+# ----------------------------------------------------------Конец_обучения----------------------------------------------------------
+
+@bot.message_handler(
+    func=lambda message: message.text.lower() == 'конец обучения' or message.text.lower() == 'the end of the training')
 def end_training(message):
     if lang == 'ru':
         bot.send_message(message.chat.id, 'Обучение закончится: 31 Мая')
@@ -212,8 +252,10 @@ def end_training(message):
         bot.send_message(message.chat.id, 'Training will end: 31 May')
 
 
-# ----------------------------------------------------------Отзывы преподавателей----------------------------------------------------------
-@bot.message_handler(func=lambda message: message.text.lower() == 'отзывы преподавателей' or message.text.lower() == 'teachers feedback')
+# ----------------------------------------------------------Отзывы_преподавателей----------------------------------------------------------
+
+@bot.message_handler(
+    func=lambda message: message.text.lower() == 'отзывы' or message.text.lower() == 'feedback')
 def teachers_feedback(message):
     if lang == 'ru':
         bot.send_message(message.chat.id, 'Леонид: Способный малый, вообще клёвый парень')
@@ -221,4 +263,17 @@ def teachers_feedback(message):
         bot.send_message(message.chat.id, 'Jhon: Good boy, very cool on pairs')
 
 
-bot.polling()
+# ----------------------------------------------------------Контакты----------------------------------------------------------
+
+@bot.message_handler(
+    func=lambda message: message.text.lower() == 'контакты' or message.text.lower() == 'contacts')
+def contacts(message):
+    if lang == 'ru':
+        bot.send_message(message.chat.id, 'Приёмная: +74951511901')
+        bot.send_message(message.chat.id, 'Учебная часть: +74951324400')
+    else:
+        bot.send_message(message.chat.id, 'Reception Office: +74951511901')
+        bot.send_message(message.chat.id, 'Teaching Department: +74951324400')
+
+
+bot.polling(none_stop=True)
