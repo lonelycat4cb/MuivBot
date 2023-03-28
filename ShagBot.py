@@ -148,13 +148,13 @@ def save_user_passwd(message):
         if uPsswd == db.get(uLogin)[0]:
             btn_welcome(message)
         else:
-            bot.send_message(message.chat.id, 'Повторите Авторизацию')
+            bot.send_message(message.chat.id, 'Oops!')
             if lang == 'ru':
                 btn_login_ru(message)
             else:
                 btn_login_en(message)
     else:
-        bot.send_message(message.chat.id, 'Повторите Авторизацию')
+        bot.send_message(message.chat.id, 'Oops!')
         if lang == 'ru':
             btn_login_ru(message)
         else:
