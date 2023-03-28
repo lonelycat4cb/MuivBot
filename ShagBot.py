@@ -2,7 +2,7 @@ import telebot
 import pyqrcode
 from telebot import types
 
-bot = telebot.TeleBot('1107170969:AAEcKoxUynG08lbnHFajPWu9gcw_pXZMUg8')
+bot = telebot.TeleBot('5838447318:AAGlaNIsRiM2jHWU8XDNjepn45ZY-3mqQso')
 
 # ----------------------------------------------------------Кнопки_языка_при_старте----------------------------------------------------------
 btnLanguage = telebot.types.ReplyKeyboardMarkup()
@@ -11,8 +11,8 @@ btnLanguage.row('English🇬🇧')
 
 # --------------------------------------QR_CODE----------------------------------QR_CODE-------------------------------------------
 
-big_code = pyqrcode.create("https://pypi.org/project/pyTelegramBotAPI/")
-big_code.png('codqrine12.png', scale=8, module_color=[0, 0, 0], background=[0xff, 0xff, 0xff])
+#big_code = pyqrcode.create("https://pypi.org/project/pyTelegramBotAPI/")
+#big_code.png('codqrine12.png', scale=8, module_color=[0, 0, 0], background=[0xff, 0xff, 0xff])
 
 
 # ----------------------------------------------------------Старт----------------------------------------------------------
@@ -55,7 +55,8 @@ dictMsg = {
         'Оплата': 'Payment',
         'Контакты': 'Contacts',
         'Расписание': 'Schedule',
-        'Рейтинг': 'Rating'
+        'Рейтинг': 'Rating',
+        'Повторите Авторизацию': 'Repeat Authorize'
     },
     'ru': {
         'Забыл логин': 'Забыл логин',
@@ -75,7 +76,8 @@ dictMsg = {
         'Оплата': 'Оплата',
         'Контакты': 'Контакты',
         'Расписание': 'Расписание',
-        'Рейтинг': 'Рейтинг'
+        'Рейтинг': 'Рейтинг',
+        'Повторите Авторизацию': 'Повторите Авторизацию'
     }
 }
 
@@ -133,12 +135,26 @@ def save_user_login(message):
 @bot.message_handler(func=lambda message: message.content_type == 'text' and awaitAuth == 2)
 def save_user_passwd(message):
     global uLogin, uPsswd, lang, awaitAuth
+    db = {}
+    with open('DataBase.txt') as file:
+        for line in file:
+            key, *value = line.split()
+            db[key] = value
+        file.close()
+
     awaitAuth = 0
     uPsswd = message.text
-    if uLogin == '1' and uPsswd == '2':
-        btn_welcome(message)
+    if uLogin in db:
+        if uPsswd == db.get(uLogin)[0]:
+            btn_welcome(message)
+        else:
+            bot.send_message(message.chat.id, 'Повторите Авторизацию')
+            if lang == 'ru':
+                btn_login_ru(message)
+            else:
+                btn_login_en(message)
     else:
-        bot.send_message(message.chat.id, 'Oops!')
+        bot.send_message(message.chat.id, 'Повторите Авторизацию')
         if lang == 'ru':
             btn_login_ru(message)
         else:
