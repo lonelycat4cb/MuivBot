@@ -1,4 +1,4 @@
-# ShagBot Как скачать?
+# MuivBot Как скачать?
 
 
 - Чтобы скачать Git на окно перейдите по этой ссылке (https://git-scm.com/download/win)
