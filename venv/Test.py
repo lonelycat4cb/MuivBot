@@ -1,35 +1,21 @@
+import telebot
+from telebot import types
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 import time
 
-browser = webdriver.Edge()
-browser.get("https://e.muiv.ru/login/index.php")
+bot = telebot.TeleBot('5838447318:AAGlaNIsRiM2jHWU8XDNjepn45ZY-3mqQso')
 
-elem_usr = browser.find_element(By.ID, 'username')
-elem_pas = browser.find_element(By.ID, 'password')
-elem_lgnbtn = browser.find_element(By.ID, 'loginbtn')
+@bot.message_handler(content_types=["text"])
+def save_log_msg(message):
+    bot.send_message(message.chat.id, "Input login: ")
+    log_msg = message.text
+    print(log_msg)
 
-usr_text = '70178540'
-pas_text = 'VuketTecy7387'
-left_btn_name = '/html/body/div[2]/nav/div/button'
-timetable = '/html/body/div[2]/div[2]/nav[2]/ul/li[5]/a'
-for i in usr_text:
-    elem_usr.send_keys(i)
-    time.sleep(0.3)
+@bot.message_handler(content_types=["text"])
+def save_pas_msg(message):
+    log_msg = bot.send_message(message.chat.id, "Input password: ")
+    print(log_msg.text)
 
-for n in pas_text:
-    elem_pas.send_keys(n)
-    time.sleep(0.3)
-
-elem_lgnbtn.click()
-elem_left_btn = browser.find_element(By.XPATH, left_btn_name)
-elem_left_btn.click()
-timetable_btn = browser.find_element(By.XPATH, timetable)
-timetable_btn.click()
-
-ttdate = browser.find_element(By.ID, 'region-main')
-print(ttdate.text)
-
-time.sleep(60)
+bot.infinity_polling()

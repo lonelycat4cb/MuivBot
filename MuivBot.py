@@ -1,6 +1,11 @@
 import telebot
 import pyqrcode
 from telebot import types
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+import time
 
 bot = telebot.TeleBot('5838447318:AAGlaNIsRiM2jHWU8XDNjepn45ZY-3mqQso')
 
@@ -135,30 +140,36 @@ def save_user_login(message):
 @bot.message_handler(func=lambda message: message.content_type == 'text' and awaitAuth == 2)
 def save_user_passwd(message):
     global uLogin, uPsswd, lang, awaitAuth
-    db = {}
-    with open('DataBase.txt') as file:
-        for line in file:
-            key, *value = line.split()
-            db[key] = value
-        file.close()
+    browser = webdriver.Edge()
+    browser.get("https://e.muiv.ru/login/index.php")
+    elem_usr = browser.find_element(By.ID, 'username')
+    elem_pas = browser.find_element(By.ID, 'password')
+    elem_lgnbtn = browser.find_element(By.ID, 'loginbtn')
 
     awaitAuth = 0
     uPsswd = message.text
-    if uLogin in db:
-        if uPsswd == db.get(uLogin)[0]:
-            btn_welcome(message)
-        else:
-            bot.send_message(message.chat.id, 'Oops!')
-            if lang == 'ru':
-                btn_login_ru(message)
-            else:
-                btn_login_en(message)
+
+    for i in uLogin:
+        elem_usr.send_keys(i)
+        time.sleep(0.3)
+
+    for n in uPsswd:
+        elem_pas.send_keys(n)
+        time.sleep(0.3)
+
+    elem_lgnbtn.click()
+
+    WebDriverWait(driver=browser, timeout=10).until(
+        lambda x: x.execute_script("return document.readyState === 'complete'")
+    )
+    error_message = "Неверный логин или пароль, попробуйте заново."
+    errors = browser.find_elements(By.XPATH, '/html/body/div[2]/div[2]/div/div/section/div/div[2]/div/div/div/div/div[1]/div')
+    if any(error_message in e.text for e in errors):
+        print("[!] Login failed")
+        btn_login_ru(message)
     else:
-        bot.send_message(message.chat.id, 'Oops!')
-        if lang == 'ru':
-            btn_login_ru(message)
-        else:
-            btn_login_en(message)
+        print("[+] Login successful")
+        btn_welcome(message)
 
 
 # ----------------------------------------------------------Панель----------------------------------------------------------
