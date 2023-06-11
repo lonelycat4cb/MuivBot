@@ -23,6 +23,7 @@ for n in pas_text:
     time.sleep(0.3)
 
 elem_lgnbtn.click()
+
 elem_left_btn = browser.find_element(By.XPATH, left_btn_name)
 elem_left_btn.click()
 timetable_btn = browser.find_element(By.XPATH, timetable)

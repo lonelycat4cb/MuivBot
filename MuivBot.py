@@ -94,6 +94,8 @@ awaitAuth = 0
 uLogin = ''
 # password user
 uPsswd = ''
+left_btn_name = '/html/body/div[2]/nav/div/button'
+timetable = '/html/body/div[2]/div[2]/nav[2]/ul/li[5]/a'
 
 
 ######
@@ -139,7 +141,7 @@ def save_user_login(message):
 # ----------------------------------------------------------Сохранение_пароля----------------------------------------------------------
 @bot.message_handler(func=lambda message: message.content_type == 'text' and awaitAuth == 2)
 def save_user_passwd(message):
-    global uLogin, uPsswd, lang, awaitAuth
+    global uLogin, uPsswd, lang, awaitAuth, browser
     browser = webdriver.Edge()
     browser.get("https://e.muiv.ru/login/index.php")
     elem_usr = browser.find_element(By.ID, 'username')
@@ -165,12 +167,11 @@ def save_user_passwd(message):
     error_message = "Неверный логин или пароль, попробуйте заново."
     errors = browser.find_elements(By.XPATH, '/html/body/div[2]/div[2]/div/div/section/div/div[2]/div/div/div/div/div[1]/div')
     if any(error_message in e.text for e in errors):
-        print("[!] Login failed")
+        bot.send_message(message.chat.id, "Ошибка авторизации, повторите логин и пароль.")
         btn_login_ru(message)
     else:
-        print("[+] Login successful")
         btn_welcome(message)
-
+    WebDriverWait(driver=browser, timeout=300)
 
 # ----------------------------------------------------------Панель----------------------------------------------------------
 
@@ -222,7 +223,14 @@ def payment(message):
     func=lambda message: message.text.lower() == 'расписание' or message.text.lower() == 'schedule')
 def schedule(message):
     if lang == 'ru':
-        bot.send_message(message.chat.id, 'Уроки будут: 24 Мая, 31 Мая')
+        elem_left_btn = browser.find_element(By.XPATH, left_btn_name)
+        elem_left_btn.click()
+        timetable_btn = browser.find_element(By.XPATH, timetable)
+        timetable_btn.click()
+        ttdate = browser.find_element(By.ID, 'region-main')
+
+        bot.send_message(message.chat.id, ttdate.text)
+
     else:
         bot.send_message(message.chat.id, 'Lessons will be: 24 May, 31 May')
 
@@ -252,9 +260,9 @@ def attendance(message):
 @bot.message_handler(func=lambda message: message.text.lower() == 'мероприятия' or message.text.lower() == 'events')
 def events(message):
     if lang == 'ru':
-        bot.send_message(message.chat.id, 'Будущие мероприятия: Летний лагер ШАГ')
+        bot.send_message(message.chat.id, 'Будущие мероприятия: Каникулы в Рязани')
     else:
-        bot.send_message(message.chat.id, 'Future events: Summer ISTEP camp')
+        bot.send_message(message.chat.id, 'Future events: Holidays in Ryazan')
 
 
 # ----------------------------------------------------------Стоимость_обучения----------------------------------------------------------
