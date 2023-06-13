@@ -94,6 +94,7 @@ awaitAuth = 0
 uLogin = ''
 # password user
 uPsswd = ''
+# buttons
 left_btn_name = '/html/body/div[2]/nav/div/button'
 timetable = '/html/body/div[2]/div[2]/nav[2]/ul/li[5]/a'
 
